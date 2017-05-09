@@ -8,5 +8,6 @@ class MainWindow: public QMainWindow
         int initialize();
         void treeViewClicked();
 
+        QMenuBar *menubar;
     
 };

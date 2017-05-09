@@ -51,9 +51,8 @@ int MainWindow::initialize()
     tree->show();
 
     
-   
-
     QHBoxLayout *layout = new QHBoxLayout();
+    
     layout->addWidget(tree);
     
     connect(tree, SIGNAL(clicked(const QModelIndex &index)), this, SLOT(treeViewClicked()));
@@ -62,12 +61,20 @@ int MainWindow::initialize()
     centralWidget->show(); 
 
     //cria menu bar
-    QMenuBar *menu=new QMenuBar(centralWidget);
+    // QMenuBar *menu=new QMenuBar(centralWidget);
 
-    QMenu *file = new QMenu("&File");
-    file->addMenu("Novo");
+    // QMenu *file = new QMenu("&File");
+    // file->addMenu("Novo");
 
-    menu->addMenu(file);
+    // menu->addMenu(file);
+    menubar = menuBar();
+    menubar->setNativeMenuBar(false);
+
+    QAction *action = new QAction(tr("New"), this);
+
+    QMenu *fileMenu = menubar->addMenu(tr("&File"));
+    fileMenu->addAction(action);
+    
 }
 
 
