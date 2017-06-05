@@ -8,7 +8,7 @@ int main(int argc, char *argv[])
     MainWindow telaPrincipal;
     telaPrincipal.initialize();
     
-    telaPrincipal.show();
+    telaPrincipal.showNormal();
 
     return app.exec();
 

@@ -1,12 +1,12 @@
-#include "MainWindow.h"
+#include "headers/MainWindow.h"
 #include <QWidget>
 #include <QHBoxLayout>
 #include <QFileSystemModel>
-#include <QTreeView>
 #include "treemodel.h"
 #include <iostream>
 #include <QDebug>
 #include <QMenuBar>
+#include <QItemSelection>
 using namespace std;
 
 int MainWindow::initialize()
@@ -18,15 +18,21 @@ int MainWindow::initialize()
 
     // QFileSystemModel *model = new QFileSystemModel;
     // model->setRootPath("/etc");
-    QDir dir("/etc");
+    QDir dir(Q_DIR);
     QString directories;
 
     for(QString q:dir.entryList())
     {
         if ( (q != ".") && (q != "..") )
-        {
-            directories +=  " \n ";
-            directories += q.toUtf8().constData();
+        {   
+            QDir d(Q_DIR + q);
+
+            if (d.exists())
+            {
+                directories +=  "\n";
+                directories += q.toUtf8().constData();
+            }
+            
             
         }
         
@@ -37,7 +43,7 @@ int MainWindow::initialize()
     TreeModel *model = new TreeModel(directories);
        
 
-    QTreeView *tree = new QTreeView();
+    tree = new QTreeView();
     tree->setModel(model);
 
     // QModelIndex idx = model->index(location);
@@ -55,7 +61,8 @@ int MainWindow::initialize()
     
     layout->addWidget(tree);
     
-    connect(tree, SIGNAL(clicked(const QModelIndex &index)), this, SLOT(treeViewClicked()));
+    //QObject::connect(tree, SIGNAL(expanded(const QModelIndex &index)), this, SLOT(treeViewClicked()));
+    connect(tree, SIGNAL(clicked(const QModelIndex &)), this, SLOT(treeViewClicked(const QModelIndex &)));
 
     centralWidget->setLayout(layout);
     centralWidget->show(); 
@@ -80,8 +87,17 @@ int MainWindow::initialize()
 
 
 
-void MainWindow::treeViewClicked()
+void MainWindow::treeViewClicked(const QModelIndex &)
 {
     qDebug() << "teste" <<"yt" ;
+
+    TreeModel* model = (TreeModel*) tree->model();
+
+    QModelIndex index = tree->currentIndex();
+
+    QVariant texto = model->data(index, Qt::DisplayRole);
+
+    qDebug() << texto.toString();
+
 }
 
