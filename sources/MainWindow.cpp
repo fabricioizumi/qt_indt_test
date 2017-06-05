@@ -30,7 +30,7 @@ int MainWindow::initialize()
             if (d.exists())
             {
                 directories +=  "\n";
-                directories += q.toUtf8().constData();
+                directories += q+"\t"+QString::number(q.length()) ;
             }
             
             
@@ -45,18 +45,12 @@ int MainWindow::initialize()
 
     tree = new QTreeView();
     tree->setModel(model);
-
-    // QModelIndex idx = model->index(location);
-    // tree->setRootIndex(idx);
-
-    tree->setColumnHidden(1,true);
-    tree->setColumnHidden(2,true);
-    tree->setColumnHidden(3,true);
-    tree->setColumnHidden(4,true);
-
+    tree->setSortingEnabled(true);
+    tree->sortByColumn(2);
+    
     tree->show();
 
-    
+        
     QHBoxLayout *layout = new QHBoxLayout();
     
     layout->addWidget(tree);
@@ -89,7 +83,7 @@ int MainWindow::initialize()
 
 void MainWindow::treeViewClicked(const QModelIndex &)
 {
-    qDebug() << "teste" <<"yt" ;
+    qDebug() << "teste";
 
     TreeModel* model = (TreeModel*) tree->model();
 

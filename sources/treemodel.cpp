@@ -197,7 +197,10 @@ void TreeModel::setupModelData(const QStringList &lines, TreeItem *parent)
             QStringList columnStrings = lineData.split("\t", QString::SkipEmptyParts);
             QList<QVariant> columnData;
             for (int column = 0; column < columnStrings.count(); ++column)
-                columnData << columnStrings[column];
+                if (column == 1)
+                    columnData << columnStrings[column].toInt();
+                else
+                    columnData << columnStrings[column];
 
             if (position > indentations.last()) {
                 // The last child of the current parent is now the new parent
